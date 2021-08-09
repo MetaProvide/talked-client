@@ -1,0 +1,17 @@
+{
+    "autoload-dev": {
+		"psr-4": {
+			"OCP\\": "vendor/christophwurst/nextcloud/OCP",
+			"OCA\\Talked\\": "lib/"
+		}
+	},
+    "scripts": {
+        "cs:check": "php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix"
+    },
+    "require": {},
+    "require-dev": {
+        "nextcloud/coding-standard": "^0.5.0",
+        "christophwurst/nextcloud": "^21.0"
+    }
+}

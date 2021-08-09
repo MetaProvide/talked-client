@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>talked</id>
+    <name>Talked</name>
+    <summary><![CDATA[Call recording for Nextcloud Talk]]></summary>
+    <description><![CDATA[Call recording for Nextcloud Talk]]></description>
+    <version>0.1.0</version>
+    <licence>agpl</licence>
+    <author mail="mw@mwalbeck.org" homepage="https://github.com/MetaProvide/talked-client">Magnus Walbeck</author>
+    <namespace>Talked</namespace>
+    <category>customization</category>
+    <website>https://github.com/MetaProvide/talked-client</website>
+    <bugs>https://github.com/MetaProvide/talked-client/issues</bugs>
+    <repository>https://github.com/MetaProvide/talked-client.git</repository>
+    <dependencies>
+        <nextcloud min-version="21" max-version="22"/>
+    </dependencies>
+    <commands>
+        <command>OCA\Talked\Command\Record</command>
+    </commands>
+</info>
