@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace OCA\Talked\Command;
 
+use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,6 +36,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Record extends Command
 {
+    /** @var IConfig */
+	private $config;
+
+	public function __construct(IConfig $config) {
+		parent::__construct();
+		$this->config = $config;
+	}
+
     protected function configure(): void
     {
         $this
@@ -58,19 +67,79 @@ class Record extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $token = $input->getArgument('token');
         $argument = $input->getArgument('argument');
+        $talkedServer = $this->config->getAppValue('talked', 'talked_server', '');
+
+        if ($talkedServer === '') {
+            $output->writeln("A recording server hasn't been configured yet.");
+            return 0;
+        }
+
+        if ($argument === 'info') {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $talkedServer);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            $output->writeln($result);
+
+            return 0;
+        }
+
+        if ($argument === 'status') {
+            $payload = [
+                'token' => $token
+            ];
+
+            $result = $this->sendPostRequest($talkedServer, 'status', $payload);
+
+            $output->writeln($result);
+
+            return 0;
+        }
 
         if ($argument === 'start') {
-            $output->writeln('Setting up recorder...');
+            $payload = [
+                'token' => $token
+            ];
+
+            $result = $this->sendPostRequest($talkedServer, 'start', $payload);
+
+            $output->writeln($result);
+
             return 0;
         }
 
         if ($argument === 'stop') {
-            $output->writeln('Stopping recording...');
+            $payload = [
+                'token' => $token
+            ];
+
+            $result = $this->sendPostRequest($talkedServer, 'stop', $payload);
+
+            $output->writeln($result);
+
             return 0;
         }
 
         $output->writeln('Nothing to do.');
         return 0;
+    }
+
+    protected function sendPostRequest($base_url, $endpoint, $payload,  $headers = []) {
+        $headers[] = 'Content-Type: application/json';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $base_url . '/' . $endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return $result;
     }
 }
