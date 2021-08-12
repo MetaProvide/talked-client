@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -69,16 +68,16 @@ class Record extends Command
     {
         $token = $input->getArgument('token');
         $argument = $input->getArgument('argument');
-        $talkedServer = $this->config->getAppValue('talked', 'talked_server', '');
+        $serverUrl = $this->config->getAppValue('talked', 'server_url', '');
 
-        if ($talkedServer === '') {
+        if ($serverUrl === '') {
             $output->writeln("A recording server hasn't been configured yet.");
             return 0;
         }
 
         if ($argument === 'info') {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $talkedServer);
+            curl_setopt($ch, CURLOPT_URL, $serverUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $result = curl_exec($ch);
             curl_close($ch);
@@ -93,7 +92,7 @@ class Record extends Command
                 'token' => $token
             ];
 
-            $result = $this->sendPostRequest($talkedServer, 'status', $payload);
+            $result = $this->sendPostRequest($serverUrl, 'status', $payload);
 
             $output->writeln($result);
 
@@ -105,7 +104,7 @@ class Record extends Command
                 'token' => $token
             ];
 
-            $result = $this->sendPostRequest($talkedServer, 'start', $payload);
+            $result = $this->sendPostRequest($serverUrl, 'start', $payload);
 
             $output->writeln($result);
 
@@ -117,7 +116,7 @@ class Record extends Command
                 'token' => $token
             ];
 
-            $result = $this->sendPostRequest($talkedServer, 'stop', $payload);
+            $result = $this->sendPostRequest($serverUrl, 'stop', $payload);
 
             $output->writeln($result);
 
@@ -128,11 +127,11 @@ class Record extends Command
         return 0;
     }
 
-    protected function sendPostRequest($base_url, $endpoint, $payload,  $headers = []) {
+    protected function sendPostRequest($serverUrl, $endpoint, $payload,  $headers = []) {
         $headers[] = 'Content-Type: application/json';
         
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $base_url . '/' . $endpoint);
+        curl_setopt($ch, CURLOPT_URL, $serverUrl . '/' . $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));

@@ -19,4 +19,7 @@
     <commands>
         <command>OCA\Talked\Command\Record</command>
     </commands>
+    <settings>
+        <admin>OCA\Talked\Settings\Admin</admin>
+    </settings>
 </info>
