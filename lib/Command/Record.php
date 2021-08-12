@@ -76,11 +76,7 @@ class Record extends Command
         }
 
         if ($argument === 'info') {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $serverUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->sendGetRequest($serverUrl, '');
 
             $output->writeln($result);
 
@@ -127,7 +123,26 @@ class Record extends Command
         return 0;
     }
 
+    protected function sendGetRequest($serverUrl, $endpoint, $headers = []) {
+        if ($this->config->getAppValue('talked', 'server_url', '0')) {
+            $headers = $this->addBasicAuthHeaders($headers);
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $serverUrl . "/" . $endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return $result;
+    }
+
     protected function sendPostRequest($serverUrl, $endpoint, $payload,  $headers = []) {
+        if ($this->config->getAppValue('talked', 'server_url', '0')) {
+            $headers = $this->addBasicAuthHeaders($headers);
+        }
+
         $headers[] = 'Content-Type: application/json';
         
         $ch = curl_init();
@@ -140,5 +155,16 @@ class Record extends Command
         curl_close($ch);
 
         return $result;
+    }
+
+    protected function addBasicAuthHeaders() {
+        $username = $this->config->getAppValue('talked', 'http_basic_auth_username');
+        $password = $this->config->getAppValue('talked', 'http_basic_auth_password');
+
+        $base64EncodedAuth = base64_encode($username . ':' . $password);
+
+        $headers[] = 'Authorization: Basic ' . $base64EncodedAuth;
+
+        return $headers;
     }
 }
