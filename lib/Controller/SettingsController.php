@@ -58,7 +58,7 @@ class SettingsController extends Controller
     public function admin(): void
     {
         if ($this->request->getParam("server_url")) {
-            $this->config->setAppValue(self::APP_NAME, "server_url", $this->request->getParam("server_url"));
+            $this->config->setAppValue(self::APP_NAME, "server_url", rtrim($this->request->getParam("server_url"), '/'));
         } else {
             $this->config->setAppValue(self::APP_NAME, "server_url", "");
         }
