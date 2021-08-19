@@ -53,10 +53,6 @@ class Record extends Command
                 InputArgument::REQUIRED
             )
             ->addArgument(
-                'userId',
-                InputArgument::REQUIRED
-            )
-            ->addArgument(
                 'argument',
                 InputArgument::REQUIRED
             )
