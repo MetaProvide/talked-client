@@ -30,7 +30,7 @@ script('talked', 'settings');
 <div id="talked" class="talked-admin section">
     <h2><?php p($l->t("Talked")); ?></h2>
     <h3><?php p($l->t("Talked server URL")); ?></h3>
-    <input type="text" class="" id="talked-server-url" value="<?php p($serverUrl); ?>">
+    <input type="text" class="" id="talked-server-url" placeholder="https://talked.example.com" value="<?php p($serverUrl); ?>">
 
     <input type="checkbox" class="checkbox" id="talked-use-http-basic-auth" <?php p($useHttpBasicAuth ? "checked" : ""); ?>>
     <label for="talked-use-http-basic-auth"><?php p($l->t("Use HTTP Basic auth for the Talked server")); ?></label>
