@@ -56,20 +56,22 @@ class Record extends Command
             ->setDescription('Call recording for Nextcloud Talk')
             ->addArgument(
                 'token',
-                InputArgument::REQUIRED
+                InputArgument::REQUIRED,
+                'A Talk room token.'
             )
             ->addArgument(
-                'argument',
-                InputArgument::REQUIRED
+                'cmd',
+                InputArgument::OPTIONAL,
+                'The command to run, the following are valid commands: info, status, start, stop and help.',
+                'help'
             )
-            ->setHelp('/recording')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $token = $input->getArgument('token');
-        $argument = $input->getArgument('argument');
+        $cmd = $input->getArgument('cmd');
         $serverUrl = $this->config->getAppValue('talked', 'server_url', '');
 
         if ($serverUrl === '') {
@@ -77,7 +79,21 @@ class Record extends Command
             return 0;
         }
 
-        if ($argument === 'info') {
+        if ($cmd === 'help' or $cmd === '') {
+            $message = 'Talked - Call recording for Nextcloud Talk
+
+You have the following options available:
+        /recording start - Starts a call recording
+        /recording stop - Stops the call recording
+        /recording status - Checks if there is an active call recording
+            ';
+
+            $output->writeln($message);
+
+            return 0;
+        }
+
+        if ($cmd === 'info') {
             $result = $this->sendGetRequest($serverUrl, '');
 
             $output->writeln($result);
@@ -85,7 +101,7 @@ class Record extends Command
             return 0;
         }
 
-        if ($argument === 'status') {
+        if ($cmd === 'status') {
             $payload = [
                 'token' => $token
             ];
@@ -97,7 +113,7 @@ class Record extends Command
             return 0;
         }
 
-        if ($argument === 'start') {
+        if ($cmd === 'start') {
             $payload = [
                 'token' => $token
             ];
@@ -109,7 +125,7 @@ class Record extends Command
             return 0;
         }
 
-        if ($argument === 'stop') {
+        if ($cmd === 'stop') {
             $payload = [
                 'token' => $token
             ];
