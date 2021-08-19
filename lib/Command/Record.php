@@ -32,15 +32,21 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 class Record extends Command
 {
     /** @var IConfig */
 	private $config;
 
-	public function __construct(IConfig $config) {
+    /** @var LoggerInterface */
+    private $logger;
+
+
+	public function __construct(IConfig $config, LoggerInterface $logger) {
 		parent::__construct();
 		$this->config = $config;
+        $this->logger = $logger;
 	}
 
     protected function configure(): void
@@ -56,7 +62,7 @@ class Record extends Command
                 'argument',
                 InputArgument::REQUIRED
             )
-            ->setHelp('/record')
+            ->setHelp('/recording')
         ;
     }
 
@@ -128,10 +134,21 @@ class Record extends Command
         curl_setopt($ch, CURLOPT_URL, $serverUrl . "/" . $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $result = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $result = json_decode(curl_exec($ch));
+        $curl_error_code = curl_errno($ch);
+        $curl_error = curl_error($ch);
         curl_close($ch);
 
-        return $result;
+        if ($curl_error_code > 0) {
+            $this->logger->error("cURL Error ($curl_error_code): $curl_error");
+            $message = "An error occured while running the command. Please try again or contact an administrator.";
+        } else {
+            $message = $result->message;
+        }
+
+        return $message;
     }
 
     protected function sendPostRequest($serverUrl, $endpoint, $payload,  $headers = []) {
@@ -147,10 +164,21 @@ class Record extends Command
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $result = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $result = json_decode(curl_exec($ch));
+        $curl_error_code = curl_errno($ch);
+        $curl_error = curl_error($ch);
         curl_close($ch);
 
-        return $result;
+        if ($curl_error_code > 0) {
+            $this->logger->error("cURL Error ($curl_error_code): $curl_error");
+            $message = "An error occured while running the command. Please try again or contact an administrator.";
+        } else {
+            $message = $result->message;
+        }
+
+        return $message;
     }
 
     protected function addBasicAuthHeaders() {
