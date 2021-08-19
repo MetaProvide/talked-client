@@ -73,7 +73,7 @@ class Record extends Command
         $serverUrl = $this->config->getAppValue('talked', 'server_url', '');
 
         if ($serverUrl === '') {
-            $output->writeln("A recording server hasn't been configured yet.");
+            $output->writeln('A recording server hasn\'t been configured yet.');
             return 0;
         }
 
@@ -121,7 +121,7 @@ class Record extends Command
             return 0;
         }
 
-        $output->writeln('Nothing to do.');
+        $output->writeln('The specified command doesn\'t exist.');
         return 0;
     }
 
@@ -131,21 +131,21 @@ class Record extends Command
         }
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $serverUrl . "/" . $endpoint);
+        curl_setopt($ch, CURLOPT_URL, $serverUrl . '/' . $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $result = json_decode(curl_exec($ch));
+        $result = curl_exec($ch);
         $curl_error_code = curl_errno($ch);
         $curl_error = curl_error($ch);
         curl_close($ch);
 
         if ($curl_error_code > 0) {
-            $this->logger->error("cURL Error ($curl_error_code): $curl_error");
-            $message = "An error occured while running the command. Please try again or contact an administrator.";
+            $this->logger->error('cURL Error (' . $curl_error_code . '): ' . $curl_error);
+            $message = 'An error occured while running the command. Please try again or contact an administrator.';
         } else {
-            $message = $result->message;
+            $message = json_decode($result)->message;
         }
 
         return $message;
@@ -166,16 +166,16 @@ class Record extends Command
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $result = json_decode(curl_exec($ch));
+        $result = curl_exec($ch);
         $curl_error_code = curl_errno($ch);
         $curl_error = curl_error($ch);
         curl_close($ch);
 
         if ($curl_error_code > 0) {
-            $this->logger->error("cURL Error ($curl_error_code): $curl_error");
-            $message = "An error occured while running the command. Please try again or contact an administrator.";
+            $this->logger->error('cURL Error (' . $curl_error_code . '): ' . $curl_error);
+            $message = 'An error occured while running the command. Please try again or contact an administrator.';
         } else {
-            $message = $result->message;
+            $message = json_decode($result)->message;
         }
 
         return $message;
