@@ -86,6 +86,7 @@ You have the following options available:
         /recording start - Starts a call recording
         /recording stop - Stops the call recording
         /recording status - Checks if there is an active call recording
+        /recording help - Shows this help message
             ';
 
             $output->writeln($message);
