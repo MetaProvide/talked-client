@@ -22,7 +22,7 @@
  *
  */
 
- function postSuccess(selector, id) {
+function postSuccess(selector, id) {
     $(selector).after(
         " <span id='" + id + "' class='msg success'>" + t("talked", "Saved") + "</span>"
     );
@@ -49,16 +49,10 @@ window.addEventListener("DOMContentLoaded", function () {
             http_basic_auth_password: $("#talked-http-basic-auth-password").val(),
         })
             .done(function () {
-                postSuccess(
-                    "#talked-save-settings",
-                    "talked-save-settings-msg"
-                );
+                postSuccess("#talked-save-settings", "talked-save-settings-msg");
             })
             .fail(function () {
-                postError(
-                    "#talked-save-settings",
-                    "talked-save-settings-msg"
-                );
+                postError("#talked-save-settings", "talked-save-settings-msg");
             });
     });
 });

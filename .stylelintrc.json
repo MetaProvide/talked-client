@@ -1,0 +1,14 @@
+{
+    "extends": ["stylelint-prettier/recommended"],
+    "rules": {
+        "prettier/prettier": [
+            true,
+            {
+                "tabWidth": 4,
+                "singleQuote": false,
+                "printWidth": 100
+            }
+        ],
+        "string-quotes": "double"
+    }
+}

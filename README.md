@@ -6,6 +6,10 @@ Check out the Talked server repo for more information on how this works and what
 
 ## Installation and setup
 
+It's available in the [Nextcloud app store](https://apps.nextcloud.com/apps/talked), just search for Talked and you should be able to find it.
+
+Or you can clone this repo into your app folder and enable it in the app menu in Nextcloud.
+
 ### Register chat command
 
 To use the chat command to interact with the Talked server, the command first needs to be registered with Talk. You can register a command using the occ command. The exact command depends on how you have installed Nextcloud. Below I'll have an example for the official docker container and the snap. For more information about registering a chat command, check out the Talk documenation: https://nextcloud-talk.readthedocs.io/en/latest/commands/
@@ -44,11 +48,11 @@ The http / https should be included in the url, for example: https://talked.exam
 
 To use Talked, simply use the `/recording` command in a chat room. If you don't specify any options or run `/recording help` you will get a help message telling you about the different options. The following options are available:
 
-`/recording start` - starts a recording in the current room.  
-`/recording stop`  - stops the active recording  
-`/recording status` - checks if there is an active recording  
-`/recording info` - prints the version number of the Talked server.  
-`/recording help` - prints a help message with the different options
+`/recording start` - starts a recording in the current room.
+`/recording stop`  - stops the active recording
+`/recording status` - checks if there is an active recording
+`/recording info` - prints the version number of the Talked server.
+`/recording help` - prints a help message with the different options.
 
 ## License
 

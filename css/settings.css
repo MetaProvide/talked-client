@@ -1,13 +1,13 @@
 .talked-admin.section {
-	border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-border);
 }
 
 .talked-admin input {
     margin-bottom: 1em;
 }
 
-.talked-admin input[type=text],
-.talked-admin input[type=password] {
+.talked-admin input[type="text"],
+.talked-admin input[type="password"] {
     width: 480px;
     display: block;
 }
