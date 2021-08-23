@@ -9,7 +9,7 @@
 
 Call recording for Nextcloud Talk. This app provides a chat based interface to interact with the Talked server component that handles the actual recording.
 
-Check out the Talked server repo for more information on how this works and what the current limitations are. https://github.com/MetaProvide/talked
+Check out the [Talked server repo](https://github.com/MetaProvide/talked) for more information on how this works and what the current limitations are.
 
 ## Installation and setup
 
