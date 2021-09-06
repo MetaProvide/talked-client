@@ -147,19 +147,21 @@ You have the following options available:
             $headers = $this->addBasicAuthHeaders($headers);
         }
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $serverUrl . '/' . $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $result = curl_exec($ch);
-        $curl_error_code = curl_errno($ch);
-        $curl_error = curl_error($ch);
-        curl_close($ch);
+        $curlHandle = curl_init();
 
-        if ($curl_error_code > 0) {
-            $this->logger->error('cURL Error (' . $curl_error_code . '): ' . $curl_error);
+        $curlHandle = $this->configureServerUri($curlHandle, $serverUrl, $endpoint);
+
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);
+        $result = curl_exec($curlHandle);
+        $curlErrorCode = curl_errno($curlHandle);
+        $curlError = curl_error($curlHandle);
+        curl_close($curlHandle);
+
+        if ($curlErrorCode > 0) {
+            $this->logger->error('cURL Error (' . $curlErrorCode . '): ' . $curlError);
             $message = 'An error occured while running the command. Please try again or contact an administrator.';
         } else {
             $message = json_decode($result)->message;
@@ -175,21 +177,23 @@ You have the following options available:
 
         $headers[] = 'Content-Type: application/json';
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $serverUrl . '/' . $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $result = curl_exec($ch);
-        $curl_error_code = curl_errno($ch);
-        $curl_error = curl_error($ch);
-        curl_close($ch);
+        $curlHandle = curl_init();
 
-        if ($curl_error_code > 0) {
-            $this->logger->error('cURL Error (' . $curl_error_code . '): ' . $curl_error);
+        $curlHandle = $this->configureServerUri($curlHandle, $serverUrl, $endpoint);
+
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlHandle, CURLOPT_POST, true);
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);
+        $result = curl_exec($curlHandle);
+        $curlErrorCode = curl_errno($curlHandle);
+        $curlError = curl_error($curlHandle);
+        curl_close($curlHandle);
+
+        if ($curlErrorCode > 0) {
+            $this->logger->error('cURL Error (' . $curlErrorCode . '): ' . $curlError);
             $message = 'An error occured while running the command. Please try again or contact an administrator.';
         } else {
             $message = json_decode($result)->message;
@@ -207,5 +211,24 @@ You have the following options available:
         $headers[] = 'Authorization: Basic ' . $base64EncodedAuth;
 
         return $headers;
+    }
+
+    protected function configureServerUri($curlHandle, string $serverUrl, string $endpoint) {
+        # Check if the URI is pointing to a unix socket
+        if (substr($serverUrl, 0, 5) === "unix:") {
+            # Check if the URI is using long form (unix://) or short form (unix:)
+            if (substr($serverUrl, 6, 1) === "/") {
+                curl_setopt($curlHandle, CURLOPT_UNIX_SOCKET_PATH, substr($serverUrl, 7));
+            } else {
+                curl_setopt($curlHandle, CURLOPT_UNIX_SOCKET_PATH, substr($serverUrl, 5));
+            }
+            # Configure the URL the requests should go to. In later versions
+            # curl requires a dummy hostname, so here we just specify localhost.
+            curl_setopt($curlHandle, CURLOPT_URL, "http://localhost" . '/' . $endpoint);
+        } else {
+            # If the URI isn't pointing to a unix socket, assume we are connecting over standard TCP
+            curl_setopt($curlHandle, CURLOPT_URL, $serverUrl . '/' . $endpoint);
+        }
+        return $curlHandle;
     }
 }
