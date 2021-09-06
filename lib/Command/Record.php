@@ -142,7 +142,7 @@ You have the following options available:
         return 0;
     }
 
-    protected function sendGetRequest($serverUrl, $endpoint, $headers = []) {
+    protected function sendGetRequest(string $serverUrl, string $endpoint, array $headers = []): string {
         if ($this->config->getAppValue('talked', 'server_url', '0')) {
             $headers = $this->addBasicAuthHeaders($headers);
         }
@@ -168,13 +168,13 @@ You have the following options available:
         return $message;
     }
 
-    protected function sendPostRequest($serverUrl, $endpoint, $payload,  $headers = []) {
+    protected function sendPostRequest(string $serverUrl, string $endpoint, array $payload,  array $headers = []): string {
         if ($this->config->getAppValue('talked', 'server_url', '0')) {
             $headers = $this->addBasicAuthHeaders($headers);
         }
 
         $headers[] = 'Content-Type: application/json';
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $serverUrl . '/' . $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -198,7 +198,7 @@ You have the following options available:
         return $message;
     }
 
-    protected function addBasicAuthHeaders() {
+    protected function addBasicAuthHeaders(): array {
         $username = $this->config->getAppValue('talked', 'http_basic_auth_username');
         $password = $this->config->getAppValue('talked', 'http_basic_auth_password');
 
