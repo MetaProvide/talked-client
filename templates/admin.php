@@ -27,7 +27,7 @@ style('talked', 'settings');
 script('talked', 'settings');
 ?>
 
-<div id="talked" class="talked-admin section">
+<div id="talked" class="talked-admin section <?php p($hideSettings ? "hidden" : ""); ?>">
     <h2><?php p($l->t("Talked")); ?></h2>
     <h3><?php p($l->t("Talked server URL")); ?></h3>
     <input type="text" class="" id="talked-server-url" placeholder="https://talked.example.com" value="<?php p($serverUrl); ?>">
@@ -36,10 +36,10 @@ script('talked', 'settings');
     <label for="talked-use-http-basic-auth"><?php p($l->t("Use HTTP Basic auth for the Talked server")); ?></label>
 
     <h3><?php p($l->t("HTTP Basic username")); ?></h3>
-    <input type="text" class="" id="talked-http-basic-auth-username" value="<?php p($HttpBasicAuthUsername); ?>">
+    <input type="text" class="" id="talked-http-basic-auth-username" value="<?php p($httpBasicAuthUsername); ?>">
 
     <h3><?php p($l->t("HTTP Basic password")); ?></h3>
-    <input type="password" class="" id="talked-http-basic-auth-password" value="<?php p($HttpBasicAuthPassword); ?>">
+    <input type="password" class="" id="talked-http-basic-auth-password" value="<?php p($httpBasicAuthPassword); ?>">
 
     <button id="talked-save-settings"><?php p($l->t("Save")); ?></button>
 </div>

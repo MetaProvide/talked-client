@@ -55,13 +55,15 @@ class Admin implements ISettings
     {
         $serverUrl = $this->config->getAppValue(self::APP_NAME, 'server_url', "");
         $useHttpBasicAuth = $this->config->getAppValue(self::APP_NAME, 'use_http_basic_auth', "0");
-        $HttpBasicAuthUsername = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_username', "");
-        $HttpBasicAuthPassword = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_password', "");
+        $httpBasicAuthUsername = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_username', "");
+        $httpBasicAuthPassword = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_password', "");
+        $hideSettings = $this->config->getAppValue(self::APP_NAME, 'hide_settings', "0");
         return new TemplateResponse('talked', 'admin', [
             "serverUrl" => $serverUrl,
             "useHttpBasicAuth" => $useHttpBasicAuth,
-            "HttpBasicAuthUsername" => $HttpBasicAuthUsername,
-            "HttpBasicAuthPassword" => $HttpBasicAuthPassword
+            "httpBasicAuthUsername" => $httpBasicAuthUsername,
+            "httpBasicAuthPassword" => $httpBasicAuthPassword,
+            "hideSettings" => $hideSettings
         ]);
     }
 
