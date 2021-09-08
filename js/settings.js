@@ -23,36 +23,36 @@
  */
 
 function postSuccess(selector, id) {
-    $(selector).after(
-        " <span id='" + id + "' class='msg success'>" + t("talked", "Saved") + "</span>"
-    );
-    setTimeout(function () {
-        $("#" + id).remove();
-    }, 3000);
+	$(selector).after(
+		" <span id='" + id + "' class='msg success'>" + t("talked", "Saved") + "</span>"
+	);
+	setTimeout(function () {
+		$("#" + id).remove();
+	}, 3000);
 }
 
 function postError(selector, id) {
-    $(selector).after(
-        " <span id='" + id + "' class='msg error'>" + t("talked", "Error") + "</span>"
-    );
-    setTimeout(function () {
-        $("#" + id).remove();
-    }, 3000);
+	$(selector).after(
+		" <span id='" + id + "' class='msg error'>" + t("talked", "Error") + "</span>"
+	);
+	setTimeout(function () {
+		$("#" + id).remove();
+	}, 3000);
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-    $("#talked-save-settings").click(function () {
-        $.post(OC.generateUrl("apps/talked/settings/admin"), {
-            server_url: $("#talked-server-url").val(),
-            use_http_basic_auth: $("#talked-use-http-basic-auth").prop("checked") ? 1 : 0,
-            http_basic_auth_username: $("#talked-http-basic-auth-username").val(),
-            http_basic_auth_password: $("#talked-http-basic-auth-password").val(),
-        })
-            .done(function () {
-                postSuccess("#talked-save-settings", "talked-save-settings-msg");
-            })
-            .fail(function () {
-                postError("#talked-save-settings", "talked-save-settings-msg");
-            });
-    });
+	$("#talked-save-settings").click(function () {
+		$.post(OC.generateUrl("apps/talked/settings/admin"), {
+			server_url: $("#talked-server-url").val(),
+			use_http_basic_auth: $("#talked-use-http-basic-auth").prop("checked") ? 1 : 0,
+			http_basic_auth_username: $("#talked-http-basic-auth-username").val(),
+			http_basic_auth_password: $("#talked-http-basic-auth-password").val(),
+		})
+			.done(function () {
+				postSuccess("#talked-save-settings", "talked-save-settings-msg");
+			})
+			.fail(function () {
+				postError("#talked-save-settings", "talked-save-settings-msg");
+			});
+	});
 });

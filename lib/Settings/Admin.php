@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -31,55 +32,50 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
 
-class Admin implements ISettings
-{
+class Admin implements ISettings {
 
-    /** @var string */
-    public const APP_NAME = 'talked';
+	/** @var string */
+	public const APP_NAME = 'talked';
 
-    /** @var IConfig */
-    private $config;
+	/** @var IConfig */
+	private $config;
 
-    /**
-     * @param IConfig $config
-     */
-    public function __construct(IConfig $config)
-    {
-        $this->config = $config;
-    }
+	/**
+	 * @param IConfig $config
+	 */
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
 
-    /**
-     * @return TemplateResponse
-     */
-    public function getForm(): TemplateResponse
-    {
-        $serverUrl = $this->config->getAppValue(self::APP_NAME, 'server_url', "");
-        $useHttpBasicAuth = $this->config->getAppValue(self::APP_NAME, 'use_http_basic_auth', "0");
-        $httpBasicAuthUsername = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_username', "");
-        $httpBasicAuthPassword = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_password', "");
-        $hideSettings = $this->config->getAppValue(self::APP_NAME, 'hide_settings', "0");
-        return new TemplateResponse('talked', 'admin', [
-            "serverUrl" => $serverUrl,
-            "useHttpBasicAuth" => $useHttpBasicAuth,
-            "httpBasicAuthUsername" => $httpBasicAuthUsername,
-            "httpBasicAuthPassword" => $httpBasicAuthPassword,
-            "hideSettings" => $hideSettings
-        ]);
-    }
+	/**
+	 * @return TemplateResponse
+	 */
+	public function getForm(): TemplateResponse {
+		$serverUrl = $this->config->getAppValue(self::APP_NAME, 'server_url', "");
+		$useHttpBasicAuth = $this->config->getAppValue(self::APP_NAME, 'use_http_basic_auth', "0");
+		$httpBasicAuthUsername = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_username', "");
+		$httpBasicAuthPassword = $this->config->getAppValue(self::APP_NAME, 'http_basic_auth_password', "");
+		$hideSettings = $this->config->getAppValue(self::APP_NAME, 'hide_settings', "0");
+		return new TemplateResponse('talked', 'admin', [
+			"serverUrl" => $serverUrl,
+			"useHttpBasicAuth" => $useHttpBasicAuth,
+			"httpBasicAuthUsername" => $httpBasicAuthUsername,
+			"httpBasicAuthPassword" => $httpBasicAuthPassword,
+			"hideSettings" => $hideSettings
+		]);
+	}
 
-    /**
-     * @return string
-     */
-    public function getSection(): string
-    {
-        return 'talk';
-    }
+	/**
+	 * @return string
+	 */
+	public function getSection(): string {
+		return 'talk';
+	}
 
-    /**
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return 50;
-    }
+	/**
+	 * @return int
+	 */
+	public function getPriority(): int {
+		return 50;
+	}
 }

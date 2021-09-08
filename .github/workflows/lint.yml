@@ -1,6 +1,10 @@
 name: Lint
 
-on: pull_request
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -8,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: npm install
+        run: |
+            npm install
+            composer install
       - name: Run prettier
         if: ${{ always() }}
         run: npm run prettier
@@ -16,3 +22,7 @@ jobs:
         continue-on-error: true
         if: ${{ always() }}
         run: npm run stylelint
+      - name: Run PHP CS fixer
+        continue-on-error: true
+        if: ${{ always() }}
+        run: composer run cs:check
