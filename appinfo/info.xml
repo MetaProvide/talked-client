@@ -47,9 +47,13 @@ occ talk:command:add recording Talked "php /var/www/html/occ talked:record {ROOM
 
 ### Configuring Talked
 
-After you have registered the Talk command you should configure Talked. If you head to Admin settings > Talk, then you will find the settings for Talked near the bottom. Here you can specify the URL for your Talked server and whether to use HTTP Basic auth, and the credentials for HTTP Basic auth.
+After you have registered the Talk command you should configure Talked. If you head to Admin settings > Talk, then you will find the settings for Talked near the bottom. Here you can specify the URI for your Talked server and whether to use HTTP Basic auth, and the credentials for HTTP Basic auth.
 
 The http / https should be included in the url, for example: https://talked.example.com
+
+You can also connect to the Talked server over a unix socket. To specify the path to a unix socket prefix the path with `unix:` for example: `unix:/tmp/talked.sock`.
+
+Please note that abstract sockets aren't supported.
 
 ## Usage
 

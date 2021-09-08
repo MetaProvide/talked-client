@@ -44,7 +44,9 @@ After you have registered the Talk command you should configure Talked. If you h
 
 The http / https should be included in the url, for example: https://talked.example.com
 
-You can also connect to the Talked server over a unix socket. To specify the path to a unix socket prefix the path with unix: or unix://.
+You can also connect to the Talked server over a unix socket. To specify the path to a unix socket prefix the path with `unix:` for example: `unix:/tmp/talked.sock`.
+
+Please note that abstract sockets aren't supported.
 
 ## Usage
 
