@@ -216,17 +216,12 @@ You have the following options available:
     protected function configureServerUri($curlHandle, string $serverUrl, string $endpoint) {
         # Check if the URI is pointing to a unix socket
         if (substr($serverUrl, 0, 5) === "unix:") {
-            # Check if the URI is using long form (unix://) or short form (unix:)
-            if (substr($serverUrl, 6, 1) === "/") {
-                curl_setopt($curlHandle, CURLOPT_UNIX_SOCKET_PATH, substr($serverUrl, 7));
-            } else {
-                curl_setopt($curlHandle, CURLOPT_UNIX_SOCKET_PATH, substr($serverUrl, 5));
-            }
+            curl_setopt($curlHandle, CURLOPT_UNIX_SOCKET_PATH, substr($serverUrl, 5));
             # Configure the URL the requests should go to. In later versions
             # curl requires a dummy hostname, so here we just specify localhost.
             curl_setopt($curlHandle, CURLOPT_URL, "http://localhost" . '/' . $endpoint);
         } else {
-            # If the URI isn't pointing to a unix socket, assume we are connecting over standard TCP
+            # If the URI isn't pointing to a unix socket, assume we are connecting over TCP
             curl_setopt($curlHandle, CURLOPT_URL, $serverUrl . '/' . $endpoint);
         }
         return $curlHandle;
