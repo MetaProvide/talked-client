@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -31,54 +32,52 @@ use OCP\AppFramework\Controller;
 use OCP\IConfig;
 use OCP\IRequest;
 
-class SettingsController extends Controller
-{
+class SettingsController extends Controller {
 
-    /** @var string */
-    public const APP_NAME = 'talked';
+	/** @var string */
+	public const APP_NAME = 'talked';
 
-    /** @var IConfig */
-    private $config;
+	/** @var IConfig */
+	private $config;
 
-    /**
-     * @param IConfig $config
-     * @param IRequest $request
-     */
-    public function __construct(
-        IConfig $config,
-        IRequest $request
-    ) {
-        parent::__construct(self::APP_NAME, $request);
-        $this->config = $config;
-    }
+	/**
+	 * @param IConfig $config
+	 * @param IRequest $request
+	 */
+	public function __construct(
+		IConfig $config,
+		IRequest $request
+	) {
+		parent::__construct(self::APP_NAME, $request);
+		$this->config = $config;
+	}
 
-    /**
-     * Set talked options
-     */
-    public function admin(): void
-    {
-        if ($this->request->getParam("server_url")) {
-            $this->config->setAppValue(self::APP_NAME, "server_url", rtrim($this->request->getParam("server_url"), '/'));
-        } else {
-            $this->config->setAppValue(self::APP_NAME, "server_url", "");
-        }
+	/**
+	 * Set talked options
+	 */
+	public function admin(): void {
+		if ($this->request->getParam("server_url")) {
+			$this->config->setAppValue(self::APP_NAME, "server_url", rtrim($this->request->getParam("server_url"), '/'));
+		} else {
+			$this->config->setAppValue(self::APP_NAME, "server_url", "");
+		}
 
-        if ($this->request->getParam("use_http_basic_auth")) {
-            $this->config->setAppValue(self::APP_NAME, "use_http_basic_auth", "1");
-        } else {
-            $this->config->setAppValue(self::APP_NAME, "use_http_basic_auth", "0");
-        }
+		if ($this->request->getParam("use_http_basic_auth")) {
+			$this->config->setAppValue(self::APP_NAME, "use_http_basic_auth", "1");
+		} else {
+			$this->config->setAppValue(self::APP_NAME, "use_http_basic_auth", "0");
+		}
 
-        if ($this->request->getParam("http_basic_auth_username")) {
-            $this->config->setAppValue(self::APP_NAME, "http_basic_auth_username", $this->request->getParam("http_basic_auth_username"));
-        } else {
-            $this->config->setAppValue(self::APP_NAME, "http_basic_auth_username", "");
-        }
+		if ($this->request->getParam("http_basic_auth_username")) {
+			$this->config->setAppValue(self::APP_NAME, "http_basic_auth_username", $this->request->getParam("http_basic_auth_username"));
+		} else {
+			$this->config->setAppValue(self::APP_NAME, "http_basic_auth_username", "");
+		}
 
-        if ($this->request->getParam("http_basic_auth_password")) {
-            $this->config->setAppValue(self::APP_NAME, "http_basic_auth_password", $this->request->getParam("http_basic_auth_password"));
-        } else {
-            $this->config->setAppValue(self::APP_NAME, "http_basic_auth_password", "");
-        }
-    }
+		if ($this->request->getParam("http_basic_auth_password")) {
+			$this->config->setAppValue(self::APP_NAME, "http_basic_auth_password", $this->request->getParam("http_basic_auth_password"));
+		} else {
+			$this->config->setAppValue(self::APP_NAME, "http_basic_auth_password", "");
+		}
+	}
 }
