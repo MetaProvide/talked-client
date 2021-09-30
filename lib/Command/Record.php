@@ -69,7 +69,7 @@ class Record extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$token = $input->getArgument('token');
-		$cmd = $input->getArgument('cmd');
+		$arguments = explode(" ", $input->getArgument('cmd'));
 		$serverUrl = $this->config->getAppValue('talked', 'server_url', '');
 
 		if ($serverUrl === '') {
@@ -77,7 +77,7 @@ class Record extends Command {
 			return 0;
 		}
 
-		if ($cmd === 'help' or $cmd === '') {
+		if ($arguments[0] === 'help' or $arguments[0] === '') {
 			$message = 'Talked - Call recording for Nextcloud Talk
 
 You have the following options available:
@@ -92,7 +92,7 @@ You have the following options available:
 			return 0;
 		}
 
-		if ($cmd === 'info') {
+		if ($arguments[0] === 'info') {
 			$result = $this->sendGetRequest($serverUrl, '');
 
 			$output->writeln($result);
@@ -100,7 +100,7 @@ You have the following options available:
 			return 0;
 		}
 
-		if ($cmd === 'status') {
+		if ($arguments[0] === 'status') {
 			$payload = [
 				'token' => $token
 			];
@@ -112,10 +112,15 @@ You have the following options available:
 			return 0;
 		}
 
-		if ($cmd === 'start') {
+		if ($arguments[0] === 'start') {
 			$payload = [
 				'token' => $token
 			];
+
+			if (count($arguments) > 1) {
+				$parsedArguments = $this->parseArguments($arguments);
+				$payload = array_merge($parsedArguments, $payload);
+			}
 
 			$result = $this->sendPostRequest($serverUrl, 'start', $payload);
 
@@ -124,7 +129,7 @@ You have the following options available:
 			return 0;
 		}
 
-		if ($cmd === 'stop') {
+		if ($arguments[0] === 'stop') {
 			$payload = [
 				'token' => $token
 			];
@@ -213,15 +218,44 @@ You have the following options available:
 
 	protected function configureServerUri($curlHandle, string $serverUrl, string $endpoint) {
 		# Check if the URI is pointing to a unix socket
-		if (substr($serverUrl, 0, 5) === "unix:") {
+		if (substr($serverUrl, 0, 5) === 'unix:') {
 			curl_setopt($curlHandle, CURLOPT_UNIX_SOCKET_PATH, substr($serverUrl, 5));
 			# Configure the URL the requests should go to. In later versions
 			# curl requires a dummy hostname, so here we just specify localhost.
-			curl_setopt($curlHandle, CURLOPT_URL, "http://localhost" . '/' . $endpoint);
+			curl_setopt($curlHandle, CURLOPT_URL, 'http://localhost' . '/' . $endpoint);
 		} else {
 			# If the URI isn't pointing to a unix socket, assume we are connecting over TCP
 			curl_setopt($curlHandle, CURLOPT_URL, $serverUrl . '/' . $endpoint);
 		}
 		return $curlHandle;
+	}
+
+	protected function parseArguments($arguments) {
+		// Remove the initial command
+		array_shift($arguments);
+
+		$parsedArguments = [];
+
+		foreach($arguments as $argument) {
+
+			if (!str_contains($argument, '=')) {
+				continue;
+			}
+			$parts = explode('=', $argument);
+
+			switch ($parts[0]) {
+				case 'audio_only':
+					if (strtolower($parts[1]) === 'true') {
+						$parsedArguments['audio_only'] = true;
+					} elseif (strtolower($parts[1]) === 'false') {
+						$parsedArguments['audio_only'] = false;
+					}
+					continue 2;
+				default:
+					continue 2;
+			}
+		}
+
+		return $parsedArguments;
 	}
 }
