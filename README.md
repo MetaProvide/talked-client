@@ -58,6 +58,14 @@ To use Talked, simply use the `/recording` command in a chat room. If you don't 
 * `/recording info` - prints the version number of the Talked server.
 * `/recording help` - prints a help message with the different options.
 
+### Audio only
+
+When starting a recording you can also supply a audio_only options which allows you to configure whether the recording should be with or without video. The default is to record with video, so to record just audio you could use the following start command:
+
+`/recording start audio_only=true`
+
+If you have the changed the default to be audio only recordings you can simply change the true to false to create a recording with video.
+
 ## License
 
 This program is licensed under the AGPLv3 or later.
