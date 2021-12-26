@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace OCA\Talked\Command;
 
 use OCP\IConfig;
+use OCP\Util;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -114,7 +115,8 @@ You have the following options available:
 
 		if ($arguments[0] === 'start') {
 			$payload = [
-				'token' => $token
+				'token' => $token,
+				'nextcloud_version' => Util::getVersion()[0]
 			];
 
 			if (count($arguments) > 1) {
