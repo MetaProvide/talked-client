@@ -253,6 +253,13 @@ You have the following options available:
 						$parsedArguments['audio_only'] = false;
 					}
 					continue 2;
+				case 'grid_view':
+					if (strtolower($parts[1]) === 'true') {
+						$parsedArguments['grid_view'] = true;
+					} elseif (strtolower($parts[1]) === 'false') {
+						$parsedArguments['grid_view'] = false;
+					}
+					continue 2;
 				default:
 					continue 2;
 			}
