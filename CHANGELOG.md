@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## 0.3.0 - 2022-01-05
+
+### Added
+
+-	Support for Nextcloud 23 (Requires v0.3.0 of Talked server)
+-	Allow supplying grid_view as an argument to the start recording command (Requires v0.3.0 of Talked server)
+
 ## 0.2.0 - 2021-09-30
 
 ### Added
