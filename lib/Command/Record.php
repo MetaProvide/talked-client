@@ -158,7 +158,7 @@ You have the following options available:
 
 		curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 60);
 		curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);
 		$result = curl_exec($curlHandle);
 		$curlErrorCode = curl_errno($curlHandle);
@@ -190,7 +190,7 @@ You have the following options available:
 		curl_setopt($curlHandle, CURLOPT_POST, true);
 		curl_setopt($curlHandle, CURLOPT_POSTFIELDS, json_encode($payload));
 		curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 60);
 		curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);
 		$result = curl_exec($curlHandle);
 		$curlErrorCode = curl_errno($curlHandle);
