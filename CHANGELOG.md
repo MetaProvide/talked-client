@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 0.5.0 - 2023-02-03
+
+### Added
+
+-	Support for Nextcloud 25 (Requires v0.5.0 of Talked server)
+
 ## 0.4.0 - 2022-05-19
 
 ### Added
